@@ -39,7 +39,7 @@ const Protected2Success = () => {
             </tbody>
           </table>
         </div>
-        <Button variant="secondary" className="w-full" onClick={() => navigate("/")}>Logout</Button>
+        <Button className="w-full bg-green-500 text-white hover:bg-green-600" onClick={() => navigate("/")}>Logout</Button>
       </div>
     </div>
   );

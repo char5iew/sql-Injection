@@ -78,7 +78,6 @@ app.post('/api/users', (req, res) => {
 
 // Vulnerable GET endpoint for unprotected login
 app.get('/api/unprotected-login', (req, res) => {
-  console.log("Endpoint hit");
   const { username, password } = req.query;
   // Vulnerable to SQL injection!
   const sql = `SELECT * FROM users WHERE name = '${username}' AND password = '${password}'`;
@@ -165,7 +164,7 @@ app.get('/api/protected-login2', (req, res) => {
 
   // Vulnerable SQL query (for demonstration)
   const sql = `SELECT * FROM users WHERE name = '${safeUsername}' AND password = '${safePassword}'`;
-  console.log(`Query Sent: ${sql}`);
+  console.log(`Executed Command: ${sql}`);
   try {
     const result = db.prepare(sql).all();
     if (result.length > 0) {

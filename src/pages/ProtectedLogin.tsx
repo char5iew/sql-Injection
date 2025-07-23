@@ -42,7 +42,7 @@ const ProtectedLogin = () => {
             <Shield className="w-12 h-12 text-primary" />
           </div>
           <CardTitle className="text-2xl font-bold">
-            Protected Login
+            ORM-Protected Login
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -79,6 +79,17 @@ const ProtectedLogin = () => {
             >
               {loading ? "Signing In..." : "Sign In"}
             </Button>
+            <div className="pt-4 border-t">
+              <Button
+                variant="default"
+                className="w-full"
+                type="button"
+                onClick={() => navigate("/")}
+                disabled={loading}
+              >
+                Back to Demo
+              </Button>
+            </div>
           </form>
         </CardContent>
       </Card>

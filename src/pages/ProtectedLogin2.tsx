@@ -42,7 +42,7 @@ const ProtectedLogin2 = () => {
             <Code className="w-12 h-12 text-green-500" />
           </div>
           <CardTitle className="text-2xl font-bold">
-            Protected Login 2 (Blacklist)
+            Sanitzied Input Login
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
