@@ -15,15 +15,16 @@ const Index = () => {
           </CardTitle>
           </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-primary justify-center">
                 <Shield className="w-5 h-5" />
-                <h3 className="font-semibold">Protected Route</h3>
+                <h3 className="font-semibold">ORM Route</h3>
               </div>
             
               <Button 
-                className="w-full" 
+                className="w-full"
+                variant="default"
                 onClick={() => navigate("/ProtectedLogin")}
               >
                 Login
@@ -37,9 +38,21 @@ const Index = () => {
               </div>
           
               <Button 
-                variant="destructive" 
+                variant="destructive"
                 className="w-full"
                 onClick={() => navigate("/UnprotectedLogin")}
+              >
+                Login
+              </Button>
+            </div>
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-green-400 justify-center">
+                <Code className="w-5 h-5" />
+                <h3 className="font-semibold">Sanitization Route</h3>
+              </div>
+              <Button 
+                className="w-full bg-green-500 text-white hover:bg-green-600"
+                onClick={() => navigate("/ProtectedLogin2")}
               >
                 Login
               </Button>

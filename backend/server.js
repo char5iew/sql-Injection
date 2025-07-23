@@ -119,6 +119,65 @@ app.get('/api/protected-login', async (req, res) => {
   }
 });
 
+// ProtectedLogin2: Like unprotected, but with blacklist-based input sanitization
+app.get('/api/protected-login2', (req, res) => {
+  // Ensure username and password are strings, trim and lowercase for comparison
+  const username = (req.query.username || '').toString().trim().toLowerCase();
+  const password = (req.query.password || '').toString().trim().toLowerCase();
+  // List of generic SQL keywords/patterns to block
+  const blacklist = [
+    ' or ',
+    ' and ',
+    '=',
+    '--',
+    ';',
+    '/*',
+    '*/',
+    ' drop ',
+    ' select ',
+    ' insert ',
+    ' update ',
+    ' delete ',
+  ];
+  // Check if username or password contains any blacklisted keyword
+  const containsBlacklisted = (input) =>
+    blacklist.some((pattern) => input.includes(pattern));
+
+  if (containsBlacklisted(username) || containsBlacklisted(password)) {
+    return res.status(400).json({
+      error: 'Input contains potentially dangerous SQL keyword or pattern. Request rejected.'
+    });
+  }
+
+  // Escape known SQL injection characters
+  const escapeSql = (str) =>
+    str
+      .replace(/'/g, "''")
+      .replace(/"/g, '\"')
+      .replace(/\\/g, '\\\\')
+      .replace(/;/g, '\;')
+      .replace(/--/g, '')
+      .replace(/\//g, '\/')
+      .replace(/\*/g, '\*');
+
+  const safeUsername = escapeSql(req.query.username || '');
+  const safePassword = escapeSql(req.query.password || '');
+
+  // Vulnerable SQL query (for demonstration)
+  const sql = `SELECT * FROM users WHERE name = '${safeUsername}' AND password = '${safePassword}'`;
+  console.log(`Query Sent: ${sql}`);
+  try {
+    const result = db.prepare(sql).all();
+    if (result.length > 0) {
+      res.json({ success: true, result });
+    } else {
+      res.json({ success: false, result: [] });
+    }
+  } catch (err) {
+    res.status(400).json({ error: err.message, sql });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Backend server running on http://localhost:${PORT}`);
 }); 

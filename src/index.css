@@ -98,6 +98,8 @@ All colors MUST be HSL.
   }
 }
 
+/* Force dark mode globally */
+
 @layer base {
   * {
     @apply border-border;
