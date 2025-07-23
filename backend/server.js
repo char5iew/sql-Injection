@@ -5,7 +5,7 @@ import cors from 'cors';
 import { fileURLToPath } from 'url';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
-import { and } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 
 // __dirname workaround in ESM
 const __filename = fileURLToPath(import.meta.url);
@@ -95,26 +95,26 @@ app.get('/api/unprotected-login', (req, res) => {
   }
 });
 
-// Protected login endpoint using Drizzle ORM (safe)
-app.get('/api/protected-login', (req, res) => {
+// Protected login endpoint using Drizzle ORM
+app.get('/api/protected-login', async (req, res) => {
   const { username, password } = req.query;
-  console.log('[PROTECTED LOGIN] username:', username, 'password:', password);
+  console.log('Query Parameters: username:', username, 'password:', password);
   try {
-    const result = orm.select().from(usersTable)
+    const result = await orm.select().from(usersTable)
       .where(
         and(
-          usersTable.name.eq(username),
-          usersTable.password.eq(password)
+          eq(usersTable.name, username),
+          eq(usersTable.password, password)
         )
       );
-    console.log('[PROTECTED LOGIN] result:', result);
+    console.log('Results: ', result);
     if (result.length > 0) {
       res.json({ success: true, result });
     } else {
       res.json({ success: false, result: [] });
     }
   } catch (err) {
-    console.error('[PROTECTED LOGIN] error:', err);
+    console.error('Error:', err);
     res.status(500).json({ error: err.message || 'Unknown error' });
   }
 });
